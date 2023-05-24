@@ -1,0 +1,4 @@
+aes.c:203:21:aesInit	14
+aes.c:312:18:aesEncryptBlock	2
+aes.c:423:18:aesDecryptBlock	2
+aes.c:532:18:aesDeinit	1

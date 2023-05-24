@@ -1,0 +1,4 @@
+des.c:293:21:desInit	9
+des.c:348:18:desEncryptBlock	2
+des.c:388:18:desDecryptBlock	2
+des.c:426:18:desDeinit	1

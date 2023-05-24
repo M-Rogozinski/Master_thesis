@@ -1,0 +1,8 @@
+yarrow.c:61:9:yarrowInit	2
+yarrow.c:93:9:yarrowSeed	2
+yarrow.c:119:9:yarrowAddEntropy	8
+yarrow.c:199:9:yarrowRead	4
+yarrow.c:258:6:yarrowGenerateBlock	3
+yarrow.c:282:6:yarrowFastReseed	3
+yarrow.c:323:6:yarrowSlowReseed	3
+yarrow.c:370:6:yarrowDeinit	2

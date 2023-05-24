@@ -1,0 +1,7 @@
+blowfish.c:228:9:blowfishInit	4
+blowfish.c:258:9:blowfishInitState	3
+blowfish.c:292:9:blowfishExpandKey	12
+blowfish.c:412:6:blowfishEncryptBlock	2
+blowfish.c:462:6:blowfishDecryptBlock	2
+blowfish.c:513:6:blowfishXorBlock	4
+blowfish.c:549:6:blowfishDeinit	1

@@ -1,0 +1,9 @@
+oid.c:50:9:oidCheck	8
+oid.c:103:7:oidComp	22
+oid.c:245:8:oidMatch	19
+oid.c:386:8:oidCountSubIdentifiers	4
+oid.c:427:9:oidEncodeSubIdentifier	4
+oid.c:475:9:oidDecodeSubIdentifier	4
+oid.c:519:9:oidFromString	12
+oid.c:659:9:oidToString	7
+oid.c:746:9:maskFromString	9

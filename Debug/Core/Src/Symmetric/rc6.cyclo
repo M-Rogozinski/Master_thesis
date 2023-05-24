@@ -1,0 +1,4 @@
+rc6.c:73:9:rc6Init	9
+rc6.c:150:6:rc6EncryptBlock	2
+rc6.c:208:6:rc6DecryptBlock	2
+rc6.c:264:6:rc6Deinit	1

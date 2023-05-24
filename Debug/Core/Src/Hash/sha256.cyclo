@@ -1,0 +1,6 @@
+sha256.c:116:21:sha256Compute	2
+sha256.c:156:18:sha256Init	1
+sha256.c:182:18:sha256Update	3
+sha256.c:221:18:sha256Final	4
+sha256.c:270:18:sha256FinalRaw	3
+sha256.c:296:18:sha256ProcessBlock	4

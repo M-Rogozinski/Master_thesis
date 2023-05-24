@@ -1,0 +1,5 @@
+sha384.c:81:21:sha384Compute	2
+sha384.c:121:18:sha384Init	1
+sha384.c:147:18:sha384Update	1
+sha384.c:160:18:sha384Final	2
+sha384.c:179:18:sha384FinalRaw	3

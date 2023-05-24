@@ -1,0 +1,7 @@
+twofish.c:125:17:GF_MUL	4
+twofish.c:172:17:H_SUB	13
+twofish.c:222:17:H	2
+twofish.c:249:9:twofishInit	12
+twofish.c:335:6:twofishEncryptBlock	2
+twofish.c:417:6:twofishDecryptBlock	2
+twofish.c:497:6:twofishDeinit	1

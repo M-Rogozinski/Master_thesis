@@ -1,0 +1,13 @@
+asn1.c:52:9:asn1ReadTag	14
+asn1.c:163:9:asn1ReadSequence	2
+asn1.c:190:9:asn1ReadOctetString	2
+asn1.c:218:9:asn1ReadOid	2
+asn1.c:247:9:asn1ReadBoolean	4
+asn1.c:285:9:asn1ReadInt32	7
+asn1.c:334:9:asn1WriteTag	24
+asn1.c:495:9:asn1WriteInt32	8
+asn1.c:553:9:asn1ReadMpi	5
+asn1.c:591:9:asn1WriteMpi	6
+asn1.c:653:9:asn1CheckTag	4
+asn1.c:679:9:asn1CheckOid	3
+asn1.c:706:9:asn1DumpObject	1

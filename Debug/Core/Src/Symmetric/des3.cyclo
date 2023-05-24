@@ -1,0 +1,4 @@
+des3.c:71:21:des3Init	6
+des3.c:122:18:des3EncryptBlock	1
+des3.c:141:18:des3DecryptBlock	1
+des3.c:158:18:des3Deinit	1

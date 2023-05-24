@@ -1,0 +1,6 @@
+sha1.c:109:21:sha1Compute	2
+sha1.c:149:18:sha1Init	1
+sha1.c:172:18:sha1Update	3
+sha1.c:211:18:sha1Final	4
+sha1.c:260:18:sha1FinalRaw	3
+sha1.c:286:18:sha1ProcessBlock	7
