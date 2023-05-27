@@ -1,0 +1,5 @@
+asymmetric.c:53:6:RsaTest	1
+asymmetric.c:61:6:RsaPKCS1	1
+asymmetric.c:86:6:RsaCleanSig	1
+asymmetric.c:92:6:RsaKeysInit	1
+asymmetric.c:106:6:RsaInit	1

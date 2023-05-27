@@ -41,7 +41,7 @@
 #include "hash/whirlpool.h"
 
 //Check crypto library configuration
-#if (WHIRLPOOL_SUPPORT == ENABLED)
+//#if (WHIRLPOOL_SUPPORT == ENABLED)
 
 //Round function
 #define RHO(b, a, n, c) \
@@ -415,4 +415,4 @@ void whirlpoolProcessBlock(WhirlpoolContext *context)
    context->h[7] ^= state[7] ^ x[7];
 }
 
-#endif
+//#endif

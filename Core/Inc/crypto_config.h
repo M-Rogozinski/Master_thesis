@@ -109,8 +109,7 @@
 #define TIGER_SUPPORT DISABLED
 //Whirlpool hash support
 #define WHIRLPOOL_SUPPORT ENABLE
-// changed
-//#define WHIRLPOOL_SUPPORT DISABLED
+
 
 //CMAC support
 #define CMAC_SUPPORT DISABLED
@@ -143,7 +142,7 @@
 //#define BLOWFISH_SUPPORT DISABLE
 #define BLOWFISH_SUPPORT ENABLE
 //Twofish support
-#define TWOFISH_SUPPORT DISABLED
+#define TWOFISH_SUPPORT ENABLE
 //MARS support
 #define MARS_SUPPORT DISABLED
 //Serpent support

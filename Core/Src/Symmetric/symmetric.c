@@ -11,7 +11,6 @@
 #include "symmetric/blowfish.h"
 #include "symmetric/twofish.h"
 #include "symmetric/rc6.h"
-#include "data.h"
 #include "tim.h"
 #include "usart.h"
 
@@ -27,14 +26,47 @@ AesContext 		contextAes32;
 
 const uint8_t key32[32] = { 0xd6, 0x13, 0x1d, 0x51, 0x84, 0x73, 0xbd, 0x05, 0x90, 0x7b, 0xaf, 0xaa, 0xbf, 0xe2, 0x46, 0x54,
 								0x9d, 0x22, 0x69, 0x41, 0x8f, 0xfa, 0xe1, 0xa5, 0xf8, 0x06, 0xc9, 0xef, 0x34, 0x9c, 0xf3, 0x78 };
+
 uint8_t tmp[2048];
 uint8_t out[2048];
+
+const uint8_t input[] = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus "
+		"et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis "
+		"enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum "
+		"felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, "
+		"porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus "
+		"varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. "
+		"Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus "
+		"et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis "
+		"enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum "
+		"felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, "
+		"porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus "
+		"varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. "
+		"Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit ve";
+
+const uint8_t original[] = "Original text: ";
+const uint8_t encrypted[] = "Encrytped text: ";
+const uint8_t decrypted[] = "Decryped text: ";
+
+const uint8_t aesName[] = 		"AES algorithm:\n";
+const uint8_t desName[] = 		"3DES algorithm:\n";
+const uint8_t twoFishName[] = 	"TwoFish algorithm:\n";
+const uint8_t blowFishName[] = "BlowFish algorithm:\n";
+const uint8_t rc4Name[] = 		"RC4 algorithm:\n";
+const uint8_t rc6Name[] = 		"RC6 algorithm:\n";
+
+const uint8_t keySizeName[] = 	"Size of key: ";
+const uint8_t dataLengthName[]=	"Size of data in bytes: ";
 
 void AesTest(void)
 {
 	aesInit(&contextAes16, key32, 16);
 	aesInit(&contextAes24, key32, 24);
 	aesInit(&contextAes32, key32, 32);
+
+	PrintResults(AES16, 1024);
+	PrintResults(AES24, 1024);
+	PrintResults(AES32, 1024);
 
 	PrintResults(AES16, 2048);
 	PrintResults(AES24, 2048);

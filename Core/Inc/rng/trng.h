@@ -32,7 +32,7 @@
 #define _TRNG_H
 
 //Dependencies
-#include "core/crypto.h"
+#include "crypto.h"
 
 //C++ guard
 #ifdef __cplusplus

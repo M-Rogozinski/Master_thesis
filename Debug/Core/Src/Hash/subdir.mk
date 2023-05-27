@@ -5,6 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/Hash/md5.c \
 ../Core/Src/Hash/sha1.c \
 ../Core/Src/Hash/sha256.c \
 ../Core/Src/Hash/sha384.c \
@@ -12,6 +13,7 @@ C_SRCS += \
 ../Core/Src/Hash/whirlpool.c 
 
 OBJS += \
+./Core/Src/Hash/md5.o \
 ./Core/Src/Hash/sha1.o \
 ./Core/Src/Hash/sha256.o \
 ./Core/Src/Hash/sha384.o \
@@ -19,6 +21,7 @@ OBJS += \
 ./Core/Src/Hash/whirlpool.o 
 
 C_DEPS += \
+./Core/Src/Hash/md5.d \
 ./Core/Src/Hash/sha1.d \
 ./Core/Src/Hash/sha256.d \
 ./Core/Src/Hash/sha384.d \
@@ -33,7 +36,7 @@ Core/Src/Hash/%.o Core/Src/Hash/%.su Core/Src/Hash/%.cyclo: ../Core/Src/Hash/%.c
 clean: clean-Core-2f-Src-2f-Hash
 
 clean-Core-2f-Src-2f-Hash:
-	-$(RM) ./Core/Src/Hash/sha1.cyclo ./Core/Src/Hash/sha1.d ./Core/Src/Hash/sha1.o ./Core/Src/Hash/sha1.su ./Core/Src/Hash/sha256.cyclo ./Core/Src/Hash/sha256.d ./Core/Src/Hash/sha256.o ./Core/Src/Hash/sha256.su ./Core/Src/Hash/sha384.cyclo ./Core/Src/Hash/sha384.d ./Core/Src/Hash/sha384.o ./Core/Src/Hash/sha384.su ./Core/Src/Hash/sha512.cyclo ./Core/Src/Hash/sha512.d ./Core/Src/Hash/sha512.o ./Core/Src/Hash/sha512.su ./Core/Src/Hash/whirlpool.cyclo ./Core/Src/Hash/whirlpool.d ./Core/Src/Hash/whirlpool.o ./Core/Src/Hash/whirlpool.su
+	-$(RM) ./Core/Src/Hash/md5.cyclo ./Core/Src/Hash/md5.d ./Core/Src/Hash/md5.o ./Core/Src/Hash/md5.su ./Core/Src/Hash/sha1.cyclo ./Core/Src/Hash/sha1.d ./Core/Src/Hash/sha1.o ./Core/Src/Hash/sha1.su ./Core/Src/Hash/sha256.cyclo ./Core/Src/Hash/sha256.d ./Core/Src/Hash/sha256.o ./Core/Src/Hash/sha256.su ./Core/Src/Hash/sha384.cyclo ./Core/Src/Hash/sha384.d ./Core/Src/Hash/sha384.o ./Core/Src/Hash/sha384.su ./Core/Src/Hash/sha512.cyclo ./Core/Src/Hash/sha512.d ./Core/Src/Hash/sha512.o ./Core/Src/Hash/sha512.su ./Core/Src/Hash/whirlpool.cyclo ./Core/Src/Hash/whirlpool.d ./Core/Src/Hash/whirlpool.o ./Core/Src/Hash/whirlpool.su
 
 .PHONY: clean-Core-2f-Src-2f-Hash
 

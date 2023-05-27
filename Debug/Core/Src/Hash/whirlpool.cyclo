@@ -1,0 +1,5 @@
+whirlpool.c:183:9:whirlpoolCompute	2
+whirlpool.c:223:6:whirlpoolInit	2
+whirlpool.c:247:6:whirlpoolUpdate	3
+whirlpool.c:286:6:whirlpoolFinal	4
+whirlpool.c:332:6:whirlpoolProcessBlock	3

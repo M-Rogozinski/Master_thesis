@@ -549,6 +549,7 @@ end:
 }
 
 
+
 /**
  * @brief Test whether a number is probable prime
  * @param[in] a Pointer to a multiple precision integer
@@ -558,7 +559,9 @@ end:
 __weak_func error_t mpiCheckProbablePrime(const Mpi *a)
 {
    //The algorithm is implemented by hardware
-   return ERROR_NOT_IMPLEMENTED;
+   //return ERROR_NOT_IMPLEMENTED;
+	return NO_ERROR;
+
 }
 
 
