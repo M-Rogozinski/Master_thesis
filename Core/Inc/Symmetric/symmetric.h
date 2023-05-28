@@ -23,13 +23,8 @@
 void AesTest(void);
 void EncryptBuf(void (*func)(void*, const uint8_t*, uint8_t* ), uint8_t block_size, void *context, const uint8_t *input, uint8_t *output, uint32_t input_len);
 void CleanTabs(void);
-void PrintOriginal(const char* name);
-void PrintEncrypted(void);
-void PrintDecrypted(void);
-void PrintResults (uint8_t, uint32_t);
-void Compare(uint32_t);
-void PrintTime(void);
-void PrintInfo(const uint8_t* cryptoName, uint32_t data_length, uint8_t keySize);
+void Results (uint8_t, uint32_t);
+
 
 
 #endif /* INC_SYMMETRIC_SYMMETRIC_H_ */

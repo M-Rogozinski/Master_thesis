@@ -13,6 +13,7 @@
 #include "symmetric/rc6.h"
 #include "tim.h"
 #include "usart.h"
+#include "print.h"
 
 
 BlowfishContext contextBlowfish;
@@ -30,33 +31,9 @@ const uint8_t key32[32] = { 0xd6, 0x13, 0x1d, 0x51, 0x84, 0x73, 0xbd, 0x05, 0x90
 uint8_t tmp[2048];
 uint8_t out[2048];
 
-const uint8_t input[] = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus "
-		"et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis "
-		"enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum "
-		"felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, "
-		"porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus "
-		"varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. "
-		"Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vLorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus "
-		"et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis "
-		"enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum "
-		"felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, "
-		"porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus "
-		"varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. "
-		"Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit ve";
+extern const uint8_t input[];
 
-const uint8_t original[] = "Original text: ";
-const uint8_t encrypted[] = "Encrytped text: ";
-const uint8_t decrypted[] = "Decryped text: ";
 
-const uint8_t aesName[] = 		"AES algorithm:\n";
-const uint8_t desName[] = 		"3DES algorithm:\n";
-const uint8_t twoFishName[] = 	"TwoFish algorithm:\n";
-const uint8_t blowFishName[] = "BlowFish algorithm:\n";
-const uint8_t rc4Name[] = 		"RC4 algorithm:\n";
-const uint8_t rc6Name[] = 		"RC6 algorithm:\n";
-
-const uint8_t keySizeName[] = 	"Size of key: ";
-const uint8_t dataLengthName[]=	"Size of data in bytes: ";
 
 void AesTest(void)
 {
@@ -64,13 +41,13 @@ void AesTest(void)
 	aesInit(&contextAes24, key32, 24);
 	aesInit(&contextAes32, key32, 32);
 
-	PrintResults(AES16, 1024);
-	PrintResults(AES24, 1024);
-	PrintResults(AES32, 1024);
+	Results(AES16, 1024);
+	Results(AES24, 1024);
+	Results(AES32, 1024);
 
-	PrintResults(AES16, 2048);
-	PrintResults(AES24, 2048);
-	PrintResults(AES32, 2048);
+	Results(AES16, 2048);
+	Results(AES24, 2048);
+	Results(AES32, 2048);
 }
 
 void EncryptBuf(void (*func)(void*, const uint8_t*, uint8_t* ), uint8_t block_size,
@@ -88,80 +65,17 @@ void CleanTabs(void)
 	memset(tmp, '\0', sizeof(tmp));
 	memset(out, '\0', sizeof(out));
 }
-void PrintOriginal(const char* name)
-{
-	HAL_UART_Transmit(&huart2, (uint8_t*)name, strlen(name), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)original, strlen((const char *)original), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)input, strlen((const char *)input), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-}
-void PrintEncrypted(void)
-{
-	HAL_UART_Transmit(&huart2, (uint8_t*)encrypted, strlen((const char *)encrypted), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)tmp, strlen((const char *)tmp), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-}
-void PrintDecrypted(void)
-{
-	HAL_UART_Transmit(&huart2, (uint8_t*)decrypted, strlen((const char *)decrypted), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)out, strlen((const char *)out), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-}
-void Compare(uint32_t data_length)
-{
-	if (memcmp(out, input, data_length) == 0) {
-		HAL_UART_Transmit(&huart2, (uint8_t*)"OK", strlen("OK"), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-	}
-	else {
-		HAL_UART_Transmit(&huart2, (uint8_t*)"not OK", strlen("not OK"), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-	}
-}
 
-void PrintTime(void)
-{
-	uint8_t time_tab[5];
 
-	itoa(TIM6->CNT, (char*)time_tab, 10);
 
-	TIM6->CNT = 0;
-
-	HAL_UART_Transmit(&huart2, (uint8_t*)time_tab, strlen((const char *)time_tab), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-
-}
-void PrintInfo(const uint8_t* cryptoName, uint32_t dataLength, uint8_t keySize)
-{
-	uint8_t keySizeTab[2];
-	uint8_t dataLengthTab[10];
-
-	itoa(keySize, (char*)keySizeTab, 10);
-	itoa(dataLength, (char*)dataLengthTab, 10);
-	// Algorithm name
-	HAL_UART_Transmit(&huart2, cryptoName, strlen((const char *)cryptoName), HAL_MAX_DELAY);
-	// Key size
-	HAL_UART_Transmit(&huart2, keySizeName, sizeof(keySizeName), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, keySizeTab, strlen((const char *)keySizeTab), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-	// Data length
-	HAL_UART_Transmit(&huart2, dataLengthName, sizeof(dataLengthName), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, dataLengthTab, strlen((const char *)dataLengthTab), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
-
-}
-
-void PrintResults (uint8_t crypto, uint32_t data_length)
+void Results (uint8_t crypto, uint32_t data_length)
 {
 	CleanTabs();
 
 	switch(crypto){
 
 		case AES16:
-			PrintInfo(aesName, data_length, 16);
+			PrintInfo(aesName, data_length, 16, NULL);
 			HAL_TIM_Base_Start(&htim6);
 			EncryptBuf(aesEncryptBlock, 16, &contextAes16, input, tmp, data_length);
 			HAL_TIM_Base_Stop(&htim6);
@@ -172,12 +86,12 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(data_length);
+			PrintCompare(data_length, out);
 
 			break;
 
 		case AES24:
-			PrintInfo(aesName, data_length, 24);
+			PrintInfo(aesName, data_length, 24, NULL);
 			HAL_TIM_Base_Start(&htim6);
 			EncryptBuf(aesEncryptBlock, 16, &contextAes24, input, tmp, data_length);
 			HAL_TIM_Base_Stop(&htim6);
@@ -188,12 +102,12 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(data_length);
+			PrintCompare(data_length, out);
 
 			break;
 
 		case AES32:
-			PrintInfo(aesName, data_length, 32);
+			PrintInfo(aesName, data_length, 32, NULL);
 			HAL_TIM_Base_Start(&htim6);
 			EncryptBuf(aesEncryptBlock, 16, &contextAes32, input, tmp, data_length);
 			HAL_TIM_Base_Stop(&htim6);
@@ -204,7 +118,7 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(data_length);
+			PrintCompare(data_length, out);
 
 			break;
 /*
@@ -221,7 +135,7 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(input1024);
+			PrintCompare(input1024, out);
 			break;
 
 		case TWOFISH:
@@ -237,7 +151,7 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(input1024);
+			PrintCompare(input1024, out);
 			break;
 
 		case TRIDES:
@@ -253,7 +167,7 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
 
-			Compare(input1024);
+			PrintCompare(input1024, out);
 			break;
 
 		case RC6:
@@ -268,7 +182,7 @@ void PrintResults (uint8_t crypto, uint32_t data_length)
 			EncryptBuf(rc6DecryptBlock, 16, &contextRc6, tmp, out, sizeof(input1024));
 			HAL_TIM_Base_Stop(&htim6);
 			PrintTime();
-			Compare(input1024);
+			PrintCompare(input1024, out);
 
 			break;
 */

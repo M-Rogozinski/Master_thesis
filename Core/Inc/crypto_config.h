@@ -108,7 +108,7 @@
 //Tiger hash support
 #define TIGER_SUPPORT DISABLED
 //Whirlpool hash support
-#define WHIRLPOOL_SUPPORT ENABLE
+#define WHIRLPOOL_SUPPORT ENABLED
 
 
 //CMAC support

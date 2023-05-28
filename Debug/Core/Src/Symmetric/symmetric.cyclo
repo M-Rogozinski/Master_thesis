@@ -1,10 +1,4 @@
-symmetric.c:61:6:AesTest	1
-symmetric.c:76:6:EncryptBuf	3
-symmetric.c:86:6:CleanTabs	1
-symmetric.c:91:6:PrintOriginal	1
-symmetric.c:98:6:PrintEncrypted	1
-symmetric.c:104:6:PrintDecrypted	1
-symmetric.c:111:6:Compare	2
-symmetric.c:125:6:PrintTime	1
-symmetric.c:137:6:PrintInfo	1
-symmetric.c:157:6:PrintResults	5
+symmetric.c:38:6:AesTest	1
+symmetric.c:53:6:EncryptBuf	3
+symmetric.c:63:6:CleanTabs	1
+symmetric.c:71:6:Results	5
