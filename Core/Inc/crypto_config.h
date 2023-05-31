@@ -201,7 +201,7 @@
 #define ECDSA_SUPPORT ENABLED
 
 //secp112r1 elliptic curve support
-#define SECP112R1_SUPPORT DISABLED
+#define SECP112R1_SUPPORT ENABLED
 //secp112r2 elliptic curve support
 #define SECP112R2_SUPPORT DISABLED
 //secp128r1 elliptic curve support

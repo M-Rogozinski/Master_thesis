@@ -93,7 +93,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 //  AesTest();
-  RsaTest();
+//  RsaTest();
+  EcTest();
 
   /* USER CODE END 2 */
 

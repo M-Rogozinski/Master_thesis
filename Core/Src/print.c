@@ -34,6 +34,8 @@ const uint8_t rc4Name[] = 		"RC4 algorithm:\n";
 const uint8_t rc6Name[] = 		"RC6 algorithm:\n";
 
 const uint8_t rsaName[] = "RSA algorithm:\n";
+const uint8_t pkcsName[] = "RSA PKCS V1 signing algorithm:\n";
+const uint8_t pssName[] = "RSA PSS signing algorithm:\n";
 
 const uint8_t sha256Name[] = "sha256 algorithm\n";
 const uint8_t sha384Name[] = "sha384 algorithm\n";

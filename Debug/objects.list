@@ -2,6 +2,7 @@
 "./Core/Src/Asymmetric/asymmetric.o"
 "./Core/Src/Asymmetric/ec.o"
 "./Core/Src/Asymmetric/ec_curves.o"
+"./Core/Src/Asymmetric/ecdsa.o"
 "./Core/Src/Asymmetric/hmac.o"
 "./Core/Src/Asymmetric/mpi.o"
 "./Core/Src/Asymmetric/oid.o"

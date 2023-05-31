@@ -8,11 +8,17 @@
 #ifndef INC_ASYMMETRIC_ASYMMETRIC_H_
 #define INC_ASYMMETRIC_ASYMMETRIC_H_
 
+void RngInit(void);
 
 void RsaKeysInit(void);
 void RsaInit(void);
 void RsaTest(void);
 void RsaCleanSig(void);
 void RsaPKCS1(void);
+void RsaPSS(void);
+
+void EcTest(void);
+void EcInit(void);
+void EcDSA(void);
 
 #endif /* INC_ASYMMETRIC_ASYMMETRIC_H_ */

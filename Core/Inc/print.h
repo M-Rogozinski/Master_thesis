@@ -20,6 +20,8 @@ extern const uint8_t rc4Name[];
 extern const uint8_t rc6Name[];
 
 extern const uint8_t rsaName[];
+extern const uint8_t pkcsName[];
+extern const uint8_t pssName[];
 
 extern const uint8_t sha256Name[];
 extern const uint8_t sha384Name[];

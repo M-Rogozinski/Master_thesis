@@ -1,0 +1,6 @@
+ecdsa.c:69:6:ecdsaInitSignature	1
+ecdsa.c:82:6:ecdsaFreeSignature	1
+ecdsa.c:98:9:ecdsaWriteSignature	12
+ecdsa.c:260:9:ecdsaReadSignature	16
+ecdsa.c:397:21:ecdsaGenerateSignature	17
+ecdsa.c:507:21:ecdsaVerifySignature	20
