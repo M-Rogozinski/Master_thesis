@@ -32,8 +32,8 @@
 #define TRACE_LEVEL CRYPTO_TRACE_LEVEL
 
 //Dependencies
-#include "core/crypto.h"
-#include "ecc/ecdh.h"
+#include "crypto.h"
+#include "Asymmetric/ecdh.h"
 #include "debug.h"
 
 //Check crypto library configuration

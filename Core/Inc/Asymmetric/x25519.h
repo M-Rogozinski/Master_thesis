@@ -1,6 +1,6 @@
 /**
- * @file dh.h
- * @brief Diffie-Hellman key exchange
+ * @file x25519.h
+ * @brief X25519 function implementation
  *
  * @section License
  *
@@ -28,12 +28,12 @@
  * @version 2.2.4
  **/
 
-#ifndef _DH_H
-#define _DH_H
+#ifndef _X25519_H
+#define _X25519_H
 
 //Dependencies
 #include "crypto.h"
-#include "Asymmetric/mpi.h"
+#include "Asymmetric/curve25519.h"
 
 //C++ guard
 #ifdef __cplusplus
@@ -42,43 +42,24 @@ extern "C" {
 
 
 /**
- * @brief Diffie-Hellman parameters
+ * @brief X25519 working state
  **/
 
 typedef struct
 {
-   Mpi p; ///<Prime modulus
-   Mpi g; ///<Generator
-} DhParameters;
+   uint32_t k[8];
+   uint32_t u[8];
+   uint32_t x1[8];
+   uint32_t z1[8];
+   uint32_t x2[8];
+   uint32_t z2[8];
+   uint32_t t1[8];
+   uint32_t t2[8];
+} X25519State;
 
 
-/**
- * @brief Diffie-Hellman context
- **/
-
-typedef struct
-{
-   DhParameters params; //Diffie-Hellman parameters
-   Mpi xa;              ///<One's own private value
-   Mpi ya;              ///<One's own public value
-   Mpi yb;              ///<Peer's public value
-} DhContext;
-
-
-//Diffie-Hellman related functions
-void dhInit(DhContext *context);
-void dhFree(DhContext *context);
-
-void dhInitParameters(DhParameters *params);
-void dhFreeParameters(DhParameters *params);
-
-error_t dhGenerateKeyPair(DhContext *context, const PrngAlgo *prngAlgo,
-   void *prngContext);
-
-error_t dhCheckPublicKey(DhParameters *params, const Mpi *publicKey);
-
-error_t dhComputeSharedSecret(DhContext *context, uint8_t *output,
-   size_t outputSize, size_t *outputLen);
+//X25519 related functions
+error_t x25519(uint8_t *r, const uint8_t *k, const uint8_t *u);
 
 //C++ guard
 #ifdef __cplusplus

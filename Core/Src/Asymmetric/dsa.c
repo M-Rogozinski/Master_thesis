@@ -38,10 +38,10 @@
 #define TRACE_LEVEL CRYPTO_TRACE_LEVEL
 
 //Dependencies
-#include "core/crypto.h"
-#include "pkc/dsa.h"
-#include "mpi/mpi.h"
-#include "encoding/asn1.h"
+#include "crypto.h"
+#include "Asymmetric/dsa.h"
+#include "Asymmetric/mpi.h"
+#include "Asymmetric/asn1.h"
 #include "debug.h"
 
 //Check crypto library configuration

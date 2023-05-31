@@ -32,12 +32,12 @@
 #define _ECDH_H
 
 //Dependencies
-#include "core/crypto.h"
-#include "ecc/ec.h"
+#include "crypto.h"
+#include "Asymmetric/ec.h"
 
 //X25519 supported?
 #if (X25519_SUPPORT == ENABLED)
-   #include "ecc/x25519.h"
+   #include "Asymmetric/x25519.h"
 #endif
 
 //X448 supported?

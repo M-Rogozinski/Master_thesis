@@ -1,0 +1,7 @@
+dh.c:54:6:dhInit	1
+dh.c:71:6:dhFree	1
+dh.c:88:6:dhInitParameters	1
+dh.c:102:6:dhFreeParameters	1
+dh.c:119:9:dhGenerateKeyPair	7
+dh.c:183:9:dhCheckPublicKey	4
+dh.c:223:9:dhComputeSharedSecret	4

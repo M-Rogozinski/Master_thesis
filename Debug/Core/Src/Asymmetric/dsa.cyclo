@@ -1,0 +1,12 @@
+dsa.c:77:6:dsaInitDomainParameters	1
+dsa.c:91:6:dsaFreeDomainParameters	1
+dsa.c:105:6:dsaInitPublicKey	1
+dsa.c:119:6:dsaFreePublicKey	1
+dsa.c:133:6:dsaInitPrivateKey	1
+dsa.c:150:6:dsaFreePrivateKey	1
+dsa.c:164:6:dsaInitSignature	1
+dsa.c:177:6:dsaFreeSignature	1
+dsa.c:193:9:dsaWriteSignature	12
+dsa.c:349:9:dsaReadSignature	16
+dsa.c:484:9:dsaGenerateSignature	15
+dsa.c:585:9:dsaVerifySignature	19

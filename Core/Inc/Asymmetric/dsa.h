@@ -32,8 +32,8 @@
 #define _DSA_H
 
 //Dependencies
-#include "core/crypto.h"
-#include "mpi/mpi.h"
+#include "crypto.h"
+#include "Asymmetric/mpi.h"
 
 //C++ guard
 #ifdef __cplusplus
