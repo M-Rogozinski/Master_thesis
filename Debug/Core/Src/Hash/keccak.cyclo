@@ -1,0 +1,10 @@
+keccak.c:82:13:theta	1
+keccak.c:138:13:rho	1
+keccak.c:178:13:pi	1
+keccak.c:217:13:chi	1
+keccak.c:272:13:iota	1
+keccak.c:285:9:keccakInit	4
+keccak.c:322:6:keccakAbsorb	4
+keccak.c:373:6:keccakFinal	3
+keccak.c:417:6:keccakSqueeze	6
+keccak.c:477:6:keccakPermutBlock	2

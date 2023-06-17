@@ -1,6 +1,6 @@
 /**
- * @file md5.h
- * @brief MD5 (Message-Digest Algorithm)
+ * @file sha3_256.h
+ * @brief SHA3-256 hash function (SHA-3 with 256-bit output)
  *
  * @section License
  *
@@ -28,27 +28,23 @@
  * @version 2.2.4
  **/
 
-#ifndef _MD5_H
-#define _MD5_H
+#ifndef _SHA3_256_H
+#define _SHA3_256_H
 
 //Dependencies
 #include "crypto.h"
+#include "Hash/keccak.h"
 
-//Application specific context
-#ifndef MD5_PRIVATE_CONTEXT
-   #define MD5_PRIVATE_CONTEXT
-#endif
-
-//MD5 block size
-#define MD5_BLOCK_SIZE 64
-//MD5 digest size
-#define MD5_DIGEST_SIZE 16
+//SHA3-256 block size
+#define SHA3_256_BLOCK_SIZE 136
+//SHA3-256 digest size
+#define SHA3_256_DIGEST_SIZE 32
 //Minimum length of the padding string
-#define MD5_MIN_PAD_SIZE 9
-//MD5 algorithm object identifier
-#define MD5_OID md5Oid
+#define SHA3_256_MIN_PAD_SIZE 1
+//SHA3-256 algorithm object identifier
+#define SHA3_256_OID sha3_256Oid
 //Common interface for hash algorithms
-#define MD5_HASH_ALGO (&md5HashAlgo)
+#define SHA3_256_HASH_ALGO (&sha3_256HashAlgo)
 
 //C++ guard
 #ifdef __cplusplus
@@ -57,38 +53,21 @@ extern "C" {
 
 
 /**
- * @brief MD5 algorithm context
+ * @brief SHA3-256 algorithm context
  **/
 
-typedef struct
-{
-   union
-   {
-      uint32_t h[4];
-      uint8_t digest[16];
-   };
-   union
-   {
-      uint32_t x[16];
-      uint8_t buffer[64];
-   };
-   size_t size;
-   uint64_t totalSize;
-   MD5_PRIVATE_CONTEXT
-} Md5Context;
+typedef KeccakContext Sha3_256Context;
 
 
-//MD5 related constants
-extern const uint8_t md5Oid[8];
-extern const HashAlgo md5HashAlgo;
+//SHA3-256 related constants
+extern const uint8_t sha3_256Oid[9];
+extern const HashAlgo sha3_256HashAlgo;
 
-//MD5 related functions
-error_t md5Compute(const void *data, size_t length, uint8_t *digest);
-void md5Init(Md5Context *context);
-void md5Update(Md5Context *context, const void *data, size_t length);
-void md5Final(Md5Context *context, uint8_t *digest);
-void md5FinalRaw(Md5Context *context, uint8_t *digest);
-void md5ProcessBlock(Md5Context *context);
+//SHA3-256 related functions
+error_t sha3_256Compute(const void *data, size_t length, uint8_t *digest);
+void sha3_256Init(Sha3_256Context *context);
+void sha3_256Update(Sha3_256Context *context, const void *data, size_t length);
+void sha3_256Final(Sha3_256Context *context, uint8_t *digest);
 
 //C++ guard
 #ifdef __cplusplus

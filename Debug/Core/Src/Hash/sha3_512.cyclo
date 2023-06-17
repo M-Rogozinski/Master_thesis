@@ -1,0 +1,4 @@
+sha3_512.c:76:9:sha3_512Compute	2
+sha3_512.c:116:6:sha3_512Init	1
+sha3_512.c:130:6:sha3_512Update	1
+sha3_512.c:143:6:sha3_512Final	1

@@ -58,7 +58,7 @@
 //RIPEMD-160 hash support
 #define RIPEMD160_SUPPORT DISABLED
 //SHA-1 hash support
-#define SHA1_SUPPORT ENABLED
+#define SHA1_SUPPORT DISABLED
 //SHA-224 hash support
 #define SHA224_SUPPORT DISABLED
 //SHA-256 hash support
@@ -74,17 +74,17 @@
 //SHA3-224 hash support
 #define SHA3_224_SUPPORT DISABLED
 //SHA3-256 hash support
-#define SHA3_256_SUPPORT DISABLED
+#define SHA3_256_SUPPORT ENABLED
 //SHA3-384 hash support
-#define SHA3_384_SUPPORT DISABLED
+#define SHA3_384_SUPPORT ENABLED
 //SHA3-512 hash support
-#define SHA3_512_SUPPORT DISABLED
+#define SHA3_512_SUPPORT ENABLED
 //SHAKE support
 #define SHAKE_SUPPORT DISABLED
 //cSHAKE support
 #define CSHAKE_SUPPORT DISABLED
 //Keccak support
-#define KECCAK_SUPPORT DISABLED
+#define KECCAK_SUPPORT ENABLED
 //BLAKE2b support
 #define BLAKE2B_SUPPORT DISABLED
 //BLAKE2b-160 hash support
@@ -108,7 +108,7 @@
 //Tiger hash support
 #define TIGER_SUPPORT DISABLED
 //Whirlpool hash support
-#define WHIRLPOOL_SUPPORT ENABLED
+#define WHIRLPOOL_SUPPORT DISABLED
 
 
 //CMAC support
@@ -133,14 +133,14 @@
 //IDEA support
 #define IDEA_SUPPORT DISABLED
 //DES support
-#define DES_SUPPORT ENABLE
+#define DES_SUPPORT DISABLED
 //Triple DES support
-#define DES3_SUPPORT ENABLE
+#define DES3_SUPPORT DISABLED
 //AES support
 #define AES_SUPPORT ENABLED
 //Blowfish support
 //#define BLOWFISH_SUPPORT DISABLE
-#define BLOWFISH_SUPPORT ENABLE
+#define BLOWFISH_SUPPORT DISABLED
 //Twofish support
 #define TWOFISH_SUPPORT ENABLE
 //MARS support
@@ -180,9 +180,9 @@
 #define GCM_SUPPORT ENABLED
 
 //ChaCha support
-#define CHACHA_SUPPORT ENABLED
+#define CHACHA_SUPPORT DISABLED
 //Poly1305 support
-#define POLY1305_SUPPORT ENABLED
+#define POLY1305_SUPPORT DISABLED
 //ChaCha20Poly1305 support
 #define CHACHA20_POLY1305_SUPPORT DISABLED
 

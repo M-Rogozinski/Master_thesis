@@ -1,6 +1,6 @@
 /**
- * @file whirlpool.h
- * @brief Whirlpool hash function
+ * @file sha3_512.h
+ * @brief SHA3-512 hash function (SHA-3 with 512-bit output)
  *
  * @section License
  *
@@ -28,22 +28,23 @@
  * @version 2.2.4
  **/
 
-#ifndef _WHIRLPOOL_H
-#define _WHIRLPOOL_H
+#ifndef _SHA3_512_H
+#define _SHA3_512_H
 
 //Dependencies
 #include "crypto.h"
+#include "hash/keccak.h"
 
-//Whirlpool block size
-#define WHIRLPOOL_BLOCK_SIZE 64
-//Whirlpool digest size
-#define WHIRLPOOL_DIGEST_SIZE 64
+//SHA3-512 block size
+#define SHA3_512_BLOCK_SIZE 72
+//SHA3-512 digest size
+#define SHA3_512_DIGEST_SIZE 64
 //Minimum length of the padding string
-#define WHIRLPOOL_MIN_PAD_SIZE 33
-//Whirlpool algorithm object identifier
-#define WHIRLPOOL_OID whirlpoolOid
+#define SHA3_512_MIN_PAD_SIZE 1
+//SHA3-512 algorithm object identifier
+#define SHA3_512_OID sha3_512Oid
 //Common interface for hash algorithms
-#define WHIRLPOOL_HASH_ALGO (&whirlpoolHashAlgo)
+#define SHA3_512_HASH_ALGO (&sha3_512HashAlgo)
 
 //C++ guard
 #ifdef __cplusplus
@@ -52,41 +53,21 @@ extern "C" {
 
 
 /**
- * @brief Whirlpool algorithm context
+ * @brief SHA3-512 algorithm context
  **/
 
-typedef struct
-{
-   union
-   {
-      uint64_t h[8];
-      uint8_t digest[64];
-   };
-   union
-   {
-      uint64_t x[8];
-      uint8_t buffer[64];
-   };
-
-   uint64_t k[8];
-   uint64_t l[8];
-   uint64_t state[8];
-
-   size_t size;
-   uint64_t totalSize;
-} WhirlpoolContext;
+typedef KeccakContext Sha3_512Context;
 
 
-//Whirlpool related constants
-extern const uint8_t whirlpoolOid[6];
-extern const HashAlgo whirlpoolHashAlgo;
+//SHA3-512 related constants
+extern const uint8_t sha3_512Oid[9];
+extern const HashAlgo sha3_512HashAlgo;
 
-//Whirlpool related functions
-error_t whirlpoolCompute(const void *data, size_t length, uint8_t *digest);
-void whirlpoolInit(WhirlpoolContext *context);
-void whirlpoolUpdate(WhirlpoolContext *context, const void *data, size_t length);
-void whirlpoolFinal(WhirlpoolContext *context, uint8_t *digest);
-void whirlpoolProcessBlock(WhirlpoolContext *context);
+//SHA3-512 related functions
+error_t sha3_512Compute(const void *data, size_t length, uint8_t *digest);
+void sha3_512Init(Sha3_512Context *context);
+void sha3_512Update(Sha3_512Context *context, const void *data, size_t length);
+void sha3_512Final(Sha3_512Context *context, uint8_t *digest);
 
 //C++ guard
 #ifdef __cplusplus

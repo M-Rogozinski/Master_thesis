@@ -80,16 +80,17 @@ void PrintInfo(const uint8_t* cryptoName, uint32_t dataLength, uint16_t keySize,
 	if ( hashName != NULL ) {
 		HAL_UART_Transmit(&huart2, hashName, strlen((const char *)hashName), HAL_MAX_DELAY);
 		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);
 	}
 }
 
-void PrintTime(void)
+void PrintTime(TIM_HandleTypeDef *htim)
 {
 	uint8_t time_tab[10];
 
-	itoa(TIM6->CNT, (char*)time_tab, 10);
+	itoa(htim->Instance->CNT, (char*)time_tab, 10);
 
-	TIM6->CNT = 0;
+	htim->Instance->CNT = 0;
 
 	HAL_UART_Transmit(&huart2, (uint8_t*)time_tab, strlen((const char *)time_tab), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart2, (uint8_t*)"\n", strlen("\n"), HAL_MAX_DELAY);

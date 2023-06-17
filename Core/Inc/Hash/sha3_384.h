@@ -1,6 +1,6 @@
 /**
- * @file sha1.h
- * @brief SHA-1 (Secure Hash Algorithm 1)
+ * @file sha3_384.h
+ * @brief SHA3-384 hash function (SHA-3 with 384-bit output)
  *
  * @section License
  *
@@ -28,27 +28,23 @@
  * @version 2.2.4
  **/
 
-#ifndef _SHA1_H
-#define _SHA1_H
+#ifndef _SHA3_384_H
+#define _SHA3_384_H
 
 //Dependencies
 #include "crypto.h"
+#include "hash/keccak.h"
 
-//Application specific context
-#ifndef SHA1_PRIVATE_CONTEXT
-   #define SHA1_PRIVATE_CONTEXT
-#endif
-
-//SHA-1 block size
-#define SHA1_BLOCK_SIZE 64
-//SHA-1 digest size
-#define SHA1_DIGEST_SIZE 20
+//SHA3-384 block size
+#define SHA3_384_BLOCK_SIZE 104
+//SHA3-384 digest size
+#define SHA3_384_DIGEST_SIZE 48
 //Minimum length of the padding string
-#define SHA1_MIN_PAD_SIZE 9
-//SHA-1 algorithm object identifier
-#define SHA1_OID sha1Oid
+#define SHA3_384_MIN_PAD_SIZE 1
+//SHA3-384 algorithm object identifier
+#define SHA3_384_OID sha3_384Oid
 //Common interface for hash algorithms
-#define SHA1_HASH_ALGO (&sha1HashAlgo)
+#define SHA3_384_HASH_ALGO (&sha3_384HashAlgo)
 
 //C++ guard
 #ifdef __cplusplus
@@ -57,38 +53,21 @@ extern "C" {
 
 
 /**
- * @brief SHA-1 algorithm context
+ * @brief SHA3-384 algorithm context
  **/
 
-typedef struct
-{
-   union
-   {
-      uint32_t h[5];
-      uint8_t digest[20];
-   };
-   union
-   {
-      uint32_t w[16];
-      uint8_t buffer[64];
-   };
-   size_t size;
-   uint64_t totalSize;
-   SHA1_PRIVATE_CONTEXT
-} Sha1Context;
+typedef KeccakContext Sha3_384Context;
 
 
-//SHA-1 related constants
-extern const uint8_t sha1Oid[5];
-extern const HashAlgo sha1HashAlgo;
+//SHA3-384 related constants
+extern const uint8_t sha3_384Oid[9];
+extern const HashAlgo sha3_384HashAlgo;
 
-//SHA-1 related functions
-error_t sha1Compute(const void *data, size_t length, uint8_t *digest);
-void sha1Init(Sha1Context *context);
-void sha1Update(Sha1Context *context, const void *data, size_t length);
-void sha1Final(Sha1Context *context, uint8_t *digest);
-void sha1FinalRaw(Sha1Context *context, uint8_t *digest);
-void sha1ProcessBlock(Sha1Context *context);
+//SHA3-384 related functions
+error_t sha3_384Compute(const void *data, size_t length, uint8_t *digest);
+void sha3_384Init(Sha3_384Context *context);
+void sha3_384Update(Sha3_384Context *context, const void *data, size_t length);
+void sha3_384Final(Sha3_384Context *context, uint8_t *digest);
 
 //C++ guard
 #ifdef __cplusplus

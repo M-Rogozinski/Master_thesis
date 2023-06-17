@@ -1,0 +1,4 @@
+sha3_256.c:76:9:sha3_256Compute	2
+sha3_256.c:116:6:sha3_256Init	1
+sha3_256.c:130:6:sha3_256Update	1
+sha3_256.c:143:6:sha3_256Final	1
