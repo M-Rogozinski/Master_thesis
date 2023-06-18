@@ -88,21 +88,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM6_Init();
   MX_USART2_UART_Init();
-  MX_TIM7_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
-  //  AesTest();
-  //  TwofishTest();
+//  AesTest();
+//  TwofishTest();
 //  RC6Test();
 
 
 
-
-
-  RsaTest();
-//  EcTest();
+//  RsaTest();
+  EcTest();
 
   /* USER CODE END 2 */
 
@@ -172,7 +169,18 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
 
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM2) {
+    HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 /* USER CODE END 4 */
 
 /**

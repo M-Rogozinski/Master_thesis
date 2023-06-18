@@ -80,7 +80,7 @@
 //SHA3-512 hash support
 #define SHA3_512_SUPPORT ENABLED
 //SHAKE support
-#define SHAKE_SUPPORT DISABLED
+#define SHAKE_SUPPORT ENABLED
 //cSHAKE support
 #define CSHAKE_SUPPORT DISABLED
 //Keccak support
@@ -251,7 +251,7 @@
 //Ed25519 elliptic curve support
 #define ED25519_SUPPORT ENABLED
 //Ed448 elliptic curve support
-#define ED448_SUPPORT DISABLED
+#define ED448_SUPPORT ENABLED
 
 //HKDF support
 #define HKDF_SUPPORT DISABLED

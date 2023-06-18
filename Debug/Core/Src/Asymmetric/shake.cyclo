@@ -1,0 +1,5 @@
+shake.c:64:9:shakeCompute	3
+shake.c:112:9:shakeInit	3
+shake.c:140:6:shakeAbsorb	1
+shake.c:152:6:shakeFinal	1
+shake.c:166:6:shakeSqueeze	1

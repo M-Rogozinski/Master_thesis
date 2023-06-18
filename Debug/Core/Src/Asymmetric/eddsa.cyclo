@@ -1,0 +1,7 @@
+eddsa.c:49:6:eddsaInitPublicKey	1
+eddsa.c:61:6:eddsaFreePublicKey	1
+eddsa.c:73:6:eddsaInitPrivateKey	1
+eddsa.c:89:6:eddsaFreePrivateKey	1
+eddsa.c:107:9:eddsaGenerateKeyPair	2
+eddsa.c:138:9:eddsaGeneratePrivateKey	5
+eddsa.c:200:9:eddsaGeneratePublicKey	7

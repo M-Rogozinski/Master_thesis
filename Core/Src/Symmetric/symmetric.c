@@ -33,6 +33,7 @@ uint8_t out[2048];
 
 extern const uint8_t input[];
 
+
 void RC6Test(void)
 {
 	uint8_t i = 0;
@@ -40,10 +41,10 @@ void RC6Test(void)
 	for(i = 0; i < 3; i++)
 	{
 		PrintInfo(rc6Name, 0, keyLenTab[i], "KeyExpansion");
-		HAL_TIM_Base_Start(&htim6);
+		HAL_TIM_Base_Start(&htim2);
 		rc6Init(&contextRc6Tab[i], key32, keyLenTab[i]);
-		HAL_TIM_Base_Stop(&htim6);
-		PrintTime(&htim6);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 	}
 
 
@@ -54,15 +55,15 @@ void RC6Test(void)
 			CleanTabs();
 
 			PrintInfo(rc6Name, dataLenTab[j], keyLenTab[i], NULL);
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(rc6EncryptBlock, 16, &contextRc6Tab[i], input, tmp, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(rc6DecryptBlock, 16, &contextRc6Tab[i], tmp, out, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
 			PrintCompare(dataLenTab[j], out);
 		}
@@ -76,10 +77,10 @@ void TwofishTest(void)
 	for(i = 0; i < 3; i++)
 	{
 		PrintInfo(twoFishName, 0, keyLenTab[i], "KeyExpansion");
-		HAL_TIM_Base_Start(&htim6);
+		HAL_TIM_Base_Start(&htim2);
 		twofishInit(&contextTwofishTab[i], key32, keyLenTab[i]);
-		HAL_TIM_Base_Stop(&htim6);
-		PrintTime(&htim6);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 	}
 
 
@@ -90,15 +91,15 @@ void TwofishTest(void)
 			CleanTabs();
 
 			PrintInfo(twoFishName, dataLenTab[j], keyLenTab[i], NULL);
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(twofishEncryptBlock, 16, &contextTwofishTab[i], input, tmp, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(twofishDecryptBlock, 16, &contextTwofishTab[i], tmp, out, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
 			PrintCompare(dataLenTab[j], out);
 		}
@@ -113,10 +114,10 @@ void AesTest(void)
 	for(i = 0; i < 3; i++)
 	{
 		PrintInfo(aesName, 0, keyLenTab[i], "KeyExpansion");
-		HAL_TIM_Base_Start(&htim6);
+		HAL_TIM_Base_Start(&htim2);
 		aesInit(&contextAesTab[i], key32, keyLenTab[i]);
-		HAL_TIM_Base_Stop(&htim6);
-		PrintTime(&htim6);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 	}
 
 
@@ -127,15 +128,15 @@ void AesTest(void)
 			CleanTabs();
 
 			PrintInfo(aesName, dataLenTab[j], keyLenTab[i], NULL);
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(aesEncryptBlock, 16, &contextAesTab[i], input, tmp, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
-			HAL_TIM_Base_Start(&htim6);
+			HAL_TIM_Base_Start(&htim2);
 			EncryptBuf(aesDecryptBlock, 16, &contextAesTab[i], tmp, out, dataLenTab[j]);
-			HAL_TIM_Base_Stop(&htim6);
-			PrintTime(&htim6);
+			HAL_TIM_Base_Stop(&htim2);
+			PrintTime(&htim2);
 
 			PrintCompare(dataLenTab[j], out);
 		}

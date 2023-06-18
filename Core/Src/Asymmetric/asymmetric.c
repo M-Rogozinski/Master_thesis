@@ -7,6 +7,7 @@
 
 #include "Asymmetric/ec.h"
 #include "Asymmetric/ecdsa.h"
+#include "Asymmetric/eddsa.h"
 #include "Asymmetric/rsa.h"
 #include "Asymmetric/asymmetric.h"
 #include "Asymmetric/asym_keys.h"
@@ -16,19 +17,28 @@
 #include "print.h"
 
 
-extern const uint8_t input[];
+extern const uint8_t input2048[];
+extern const uint8_t input1024[];
+extern const uint8_t input512[];
 
 YarrowContext contextYarrow;
 
 
-RsaPrivateKey	rsaPrivateKeys[4];
-RsaPublicKey	rsaPublicKeys[4];
+RsaPrivateKey		rsaPrivateKeys[4];
+RsaPublicKey		rsaPublicKeys[4];
 
-EcPrivateKey	ecPrivateKeys[3];
-EcPublicKey		ecPublicKeys[3];
+EcPrivateKey		ecPrivateKeys[3];
+EcPublicKey			ecPublicKeys[3];
 
 EcDomainParameters  ecParams[3];
 EcdsaSignature		ecdsaSig[3];
+
+
+EddsaPrivateKey		edPrivateKeys[2];
+EddsaPublicKey		edPublicKeys[2];
+
+uint8_t Ed25519sig[64];
+uint8_t Ed488sig[114];
 
 uint8_t seed[64] = {1,2,3,4};
 
@@ -48,7 +58,10 @@ void EcTest(void)
 
 	EcInit();
 
-	EcDSA();
+//	EcDSA();
+//	EcDSASize();
+
+	EdDSA();
 }
 
 void EcInit(void)
@@ -71,22 +84,113 @@ void EcInit(void)
 	ecGenerateKeyPair(&yarrowPrngAlgo, &contextYarrow, &ecParams[2], &ecPrivateKeys[2], &ecPublicKeys[2]);
 
 	ecdsaInitSignature(&ecdsaSig);
+
+//----------EdDSA---------------------------------
+	eddsaGenerateKeyPair(&yarrowPrngAlgo, &contextYarrow, &ed25519Curve, &edPrivateKeys[0], &edPublicKeys[0]);
+	eddsaGenerateKeyPair(&yarrowPrngAlgo, &contextYarrow, &ed448Curve, &edPrivateKeys[1], &edPublicKeys[1]);
+
+}
+
+void EdDSA(void)
+{
+	RsaCleanSig();
+
+	PrintInfo("EdDSA25519", 1024, 25519, NULL);
+	HAL_TIM_Base_Start(&htim2);
+	ed25519GenerateSignature(&edPrivateKeys[0], &edPublicKeys[0], input1024, 1024, NULL, 0, 0, &Ed25519sig);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	HAL_TIM_Base_Start(&htim2);
+	ed25519VerifySignature(&edPublicKeys[0], input1024, 1024, NULL, 0, 0, &Ed25519sig);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	RsaCleanSig();
+
+
+	PrintInfo("EdDSA448", 1024, 448, NULL);
+	HAL_TIM_Base_Start(&htim2);
+	ed448GenerateSignature(&edPrivateKeys[1], &edPublicKeys[1], input1024, 1024, NULL, 0, 0, &Ed488sig);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	HAL_TIM_Base_Start(&htim2);
+	ed448VerifySignature(&edPublicKeys[1], input1024, 1024, NULL, 0, 0, &Ed488sig);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	RsaCleanSig();
+}
+
+void EcDSASize(void)
+{
+	uint8_t i = 1;
+
+	PrintInfo("EcDSA", 512, asymKeysLengths[i], NULL);
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaGenerateSignature(&yarrowPrngAlgo, &contextYarrow, &ecParams[i], &ecPrivateKeys[i], input512, 512, &ecdsaSig[0]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input512, 512, &ecdsaSig[0]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input512, 512, &ecdsaSig[0]) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
+
+	PrintInfo("EcDSA", 1024, asymKeysLengths[i], NULL);
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaGenerateSignature(&yarrowPrngAlgo, &contextYarrow, &ecParams[i], &ecPrivateKeys[i], input1024, 1024, &ecdsaSig[1]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input1024, 1024, &ecdsaSig[1]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input1024, 1024, &ecdsaSig[1]) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
+
+	PrintInfo("EcDSA", 2048, asymKeysLengths[i], NULL);
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaGenerateSignature(&yarrowPrngAlgo, &contextYarrow, &ecParams[i], &ecPrivateKeys[i], input2048, 2048, &ecdsaSig[2]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	HAL_TIM_Base_Start(&htim2);
+	ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input2048, 2048, &ecdsaSig[2]);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input2048, 2048, &ecdsaSig[2]) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
 }
 
 void EcDSA(void)
 {
 	for (uint8_t i = 0; i < 3; i++)
 	{
-		PrintInfo("EcDSA", 2048, asymKeysLengths[i], i);
-		HAL_TIM_Base_Start(&htim7);
-		ecdsaGenerateSignature(&yarrowPrngAlgo, &contextYarrow, &ecParams[i], &ecPrivateKeys[i], input, 2048, &ecdsaSig[i]);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		PrintInfo("EcDSA", 2048, asymKeysLengths[i], NULL);
+		HAL_TIM_Base_Start(&htim2);
+		ecdsaGenerateSignature(&yarrowPrngAlgo, &contextYarrow, &ecParams[i], &ecPrivateKeys[i], input1024, 2048, &ecdsaSig[i]);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
-		HAL_TIM_Base_Start(&htim7);
-		ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input, 2048, &ecdsaSig[i]);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input1024, 2048, &ecdsaSig[i]);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (ecdsaVerifySignature(&ecParams[i], &ecPublicKeys[i], input1024, 2048, &ecdsaSig[i]) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
 	}
 }
 
@@ -97,19 +201,59 @@ void RsaTest(void)
 	yarrowSeed(&contextYarrow, seed, sizeof(seed));
 
 	RsaInit();
-	uint32_t size ;
-	size = strlen(input);
-	uint8_t buf[100];
-	itoa(size, buf, 10);
-	HAL_UART_Transmit(&huart2, buf, strlen(buf), HAL_MAX_DELAY);
+
+//	RsaPKCS1Size();
+
 //	RsaPKCS1();
 //	RsaPSS();
-
+//	RsaPSSSize();
 }
 
 void RsaInit(void)
 {
 	RsaKeysInit();
+}
+
+void RsaPSSSize(void)
+{
+	uint8_t i = 1;
+	RsaCleanSig();
+
+	PrintInfo(pssName, 512, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha256HashAlgo, 20, input512, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssVerify(&rsaPublicKeys[i], &sha256HashAlgo, 20, input512, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	RsaCleanSig();
+
+	PrintInfo(pssName, 1024, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha256HashAlgo, 20, input1024, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssVerify(&rsaPublicKeys[i], &sha256HashAlgo, 20, input1024, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	RsaCleanSig();
+
+	PrintInfo(pssName, 2048, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha256HashAlgo, 20, input2048, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPssVerify(&rsaPublicKeys[i], &sha256HashAlgo, 20, input2048, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+
+	RsaCleanSig();
 }
 
 void RsaPSS(void)
@@ -119,75 +263,130 @@ void RsaPSS(void)
 	for ( uint8_t i = 1; i < 4; i++) {
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], sha256Name);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha256HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha256HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha256HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha256HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
 		RsaCleanSig();
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], sha384Name);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha384HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha384HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha384HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha384HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
 		RsaCleanSig();
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], sha512Name);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha512HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha512HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha512HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha512HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
 		RsaCleanSig();
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], "sha3_256");
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_256HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha3_256HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_256HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha3_256HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
 		RsaCleanSig();
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], "sha3_384");
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_384HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha3_384HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_384HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha3_384HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 
 		RsaCleanSig();
 
 		PrintInfo(pssName, 2048, asymKeysLengths[i], "sha3_512");
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_512HashAlgo, 20, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPssVerify(&rsaPublicKeys[i], &sha3_512HashAlgo, 20, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssSign(&yarrowPrngAlgo, &contextYarrow, &rsaPrivateKeys[i], &sha3_512HashAlgo, 20, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPssVerify(&rsaPublicKeys[i], &sha3_512HashAlgo, 20, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
 	}
+}
+
+void RsaPKCS1Size(void)
+{
+	uint8_t i = 1;
+
+	RsaCleanSig();
+
+	PrintInfo(pkcsName, 512, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha256HashAlgo, input512, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input512, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input512, sig, sigLen) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
+
+	RsaCleanSig();
+
+	PrintInfo(pkcsName, 1024, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha256HashAlgo, input1024, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input1024, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input1024, sig, sigLen) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
+
+	RsaCleanSig();
+
+	PrintInfo(pkcsName, 2048, asymKeysLengths[i], sha256Name);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha256HashAlgo, input2048, sig, &sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	HAL_TIM_Base_Start(&htim2);
+	rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input2048, sig, sigLen);
+	HAL_TIM_Base_Stop(&htim2);
+	PrintTime(&htim2);
+	if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input2048, sig, sigLen) == 0)
+	{
+		HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+	}
+
+	RsaCleanSig();
 }
 
 void RsaPKCS1(void)
@@ -197,70 +396,101 @@ void RsaPKCS1(void)
 	for (uint8_t i = 1; i < 4; i++ ) {
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], sha256Name);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha256HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha256HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha256HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
 
 		RsaCleanSig();
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], sha384Name);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha384HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha384HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha384HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha384HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha384HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
 
 		RsaCleanSig();
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], sha512Name);
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha512HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha512HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha512HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha512HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha512HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
+
+		RsaCleanSig();
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], "sha3_256");
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_256HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_256HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_256HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_256HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_256HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
 
 		RsaCleanSig();
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], "sha3_384");
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_384HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_384HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_384HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_384HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_384HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
 
 		RsaCleanSig();
 
 		PrintInfo(pkcsName, 2048, asymKeysLengths[i], "sha3_512");
-		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_512HashAlgo, input, sig, &sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
-		HAL_TIM_Base_Start(&htim7);
-		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_512HashAlgo, input, sig, sigLen);
-		HAL_TIM_Base_Stop(&htim7);
-		PrintTime(&htim7);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Sign(&rsaPrivateKeys[i], &sha3_512HashAlgo, input1024, sig, &sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		HAL_TIM_Base_Start(&htim2);
+		rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_512HashAlgo, input1024, sig, sigLen);
+		HAL_TIM_Base_Stop(&htim2);
+		PrintTime(&htim2);
+		if (rsassaPkcs1v15Verify(&rsaPublicKeys[i], &sha3_512HashAlgo, input1024, sig, sigLen) == 0)
+		{
+			HAL_UART_Transmit(&huart2, "OK\n", strlen("OK\n"), HAL_MAX_DELAY);
+		}
+
+		RsaCleanSig();
+
 	}
 }
 
@@ -268,6 +498,10 @@ void RsaCleanSig(void)
 {
 	memset(sig, 0, sizeof(sig));
 	sigLen = 0;
+
+	for (uint8_t i = 0; i < 3; i++){
+		ecdsaFreeSignature(&ecdsaSig[i]);
+	}
 }
 
 void RsaKeysInit(void)

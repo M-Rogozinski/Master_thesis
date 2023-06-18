@@ -1,6 +1,6 @@
-print.c:49:6:PrintCompare	2
-print.c:63:6:PrintInfo	2
-print.c:87:6:PrintTime	1
-print.c:100:6:PrintOriginal	1
-print.c:107:6:PrintEncrypted	1
-print.c:115:6:PrintDecrypted	1
+print.c:63:6:PrintCompare	2
+print.c:77:6:PrintInfo	2
+print.c:101:6:PrintTime	1
+print.c:114:6:PrintOriginal	1
+print.c:121:6:PrintEncrypted	1
+print.c:129:6:PrintDecrypted	1
